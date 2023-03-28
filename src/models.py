@@ -8,16 +8,7 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'user'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    lastname = Column(String(250), nullable=False)
-    login = Column(String(250), nullable=False)
-    favorites = Column(String(250), nullable=False)
-    favorites = relationship("favorites", back_populates="user")
+
 
 class People(Base):
     __tablename__ = 'people'
@@ -63,6 +54,18 @@ class Favorites(Base):
     planets_id = Column(Integer, ForeignKey('planets.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship("User", back_populates="favorites")
+
+class User(Base):
+    __tablename__ = 'user'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    lastname = Column(String(250), nullable=False)
+    login = Column(String(250), nullable=False)
+    favorites = Column(String(250), nullable=False)
+    favorites_id = Column(Integer, ForeignKey('favorites.id'))
+    favorites = relationship("favorites", back_populates="user")
 
     def to_dict(self):
         return {}
